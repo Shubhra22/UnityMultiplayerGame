@@ -11,12 +11,20 @@ public class Network : MonoBehaviour
     void Start()
     {
         _socket = GetComponent<SocketIOComponent>();
-        _socket.On("open",Callback);
+        _socket.On("open",OnConnected);
+        _socket.On("spawn",OnSpawn);
+        //_socket.On("spawn",Callback);
     }
 
-    private void Callback(SocketIOEvent obj)
+    private void OnSpawn(SocketIOEvent obj)
     {
-        Debug.Log("connected");
+        Debug.Log("spawned");
+        GameObject.CreatePrimitive(PrimitiveType.Capsule);
+    }
+
+    private void OnConnected(SocketIOEvent obj)
+    {
+        Debug.Log("Client Connected");
         _socket.Emit("move");
     }
 
